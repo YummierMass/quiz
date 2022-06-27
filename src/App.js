@@ -36,7 +36,7 @@ function App() {
       ]
     },
     {
-      questionText: 'Często reagujesz na daną sytuacje zbyt szybko niż powinieneś.',
+      questionText: 'Często reagujesz na daną sytuacje zbyt wolno niż powinieneś.',
       answerOptions: [
         { answerText: 'Tak', answer: 'TAK' },
         { answerText: 'Nie', answer: 'NIE' },
@@ -179,11 +179,11 @@ function App() {
   }
 
   const getPersonality = ans => {
-    if (ans[0] === 'TAK' && ans[1] === 'NIE' && ans[3] === 'TAK' && ans[4] === "TAK")
+    if (ans[0] === 'TAK' && ans[1] === 'NIE' && ans[2] === 'TAK' && ans[3] === 'TAK' && ans[4] === "TAK")
       setPersonality("Powolny");
-    else if (ans[1] === 'TAK' && ans[2] === 'NIE' && ans[3] === 'NIE')
+    else if (ans[0] === 'NIE' && ans[1] === 'TAK' && ans[2] === 'NIE' && ans[3] === 'NIE' && ans[4] === 'NIE')
       setPersonality("Impulsywny");
-    else if (ans[0] === 'TAK' && ans[2] === 'TAK' && ans[3] === 'TAK')
+    else if (ans[0] === 'NIE' && ans[1] === 'NIE' && ans[2] === 'TAK' && ans[3] === 'TAK' && ans[4] === 'NIE')
       setPersonality("Myśliciel");
     else if (ans[0] === 'TAK' && ans[1] === 'NIE' && ans[2] === 'TAK' && ans[3] === 'TAK' && ans[4] === 'NIE')
       setPersonality("Optymista");
