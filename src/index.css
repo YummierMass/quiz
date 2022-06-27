@@ -41,18 +41,28 @@ body {
 .question-section {
   width: 100%;
   position: relative;
+  text-align: center;
 }
 
 .question-count {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  color:#252d4a;
+  font-weight: bold;
 }
 
 .question-count span {
-  font-size: 28px;
+  font-size: 20px;
+  color:#252d4a;
+  font-weight: bold;
 }
 
 .question-text {
+  font-family: 'Courier New', Courier, monospace;
   margin-bottom: 12px;
+  font-size: 20px;
+  text-align: center;
+  color:#252d4a;
+  font-weight: bold;
 }
 
 .timer-text {
@@ -103,6 +113,7 @@ button {
   color: #ff3333;
   font-weight: bold;
   font-size: 20pt;
+  text-align: center;
 }
 
 button:hover {

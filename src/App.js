@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import DateTimeDisplay from './components/DateTimeDisplay';
 import { useCountdown } from './components/useCountdown';
@@ -144,16 +144,18 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [answers2, setAnswers2] = useState(0);
   const [personality, setPersonality] = useState('');
+  const [username, setName] = useState('');
+  const [showQuiz, setShowQuiz] = useState(false);
 
-  const FIVE_SECONDS = 5 * 1000;
+  const FIVE_SECONDS = 7 * 1000;
   const NOW_IN_MS = new Date().getTime();
 
   const dateTimeAfter = NOW_IN_MS + FIVE_SECONDS;
-  
+
   const handleAnswerOptionClick = (answer) => {
     setAnswers([...answers, answer])
     const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length){
+    if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
       getPersonality(answers);
@@ -202,7 +204,7 @@ function App() {
       </div>
     );
   };
-  
+
   const ShowCounter = ({ days, hours, minutes, seconds }) => {
     return (
       <div className="show-counter">
@@ -212,21 +214,21 @@ function App() {
           rel="noopener noreferrer"
           className="countdown-link"
         >
-          <DateTimeDisplay value={days} type={'Days'} isDanger={days <= 3} />
+          {/* <DateTimeDisplay value={days} type={'Days'} isDanger={days <= 3} />
           <p>:</p>
           <DateTimeDisplay value={hours} type={'Hours'} isDanger={false} />
           <p>:</p>
           <DateTimeDisplay value={minutes} type={'Mins'} isDanger={false} />
-          <p>:</p>
+          <p>:</p> */}
           <DateTimeDisplay value={seconds} type={'Seconds'} isDanger={false} />
         </a>
       </div>
     );
   };
-  
+
   const CountdownTimer = ({ targetDate }) => {
     const [days, hours, minutes, seconds] = useCountdown(targetDate);
-  
+
     if (days + hours + minutes + seconds <= 0) {
       return <ExpiredNotice />;
     } else {
@@ -241,58 +243,76 @@ function App() {
     }
   };
 
+  const sendName = () => {
+    setShowQuiz(true);
+  }
+
   return (
     <div className="App">
-      {showTest ? (
-        <>
-          {showScore2 ? (
-            (answers2 === 0 & answers2 >= 5) ? (<div className="points">Jesteś {personality} Otrzymałeś: {answers2} punktów</div>
+      {showQuiz ? (<>
+        {showTest ? (
+          <>
+            {showScore2 ? (
+              (answers2 === 0 & answers2 >= 5) ? (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punktów</div>
+              ) : (
+                (answers2 === 1) ? (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punkt</div>) : (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punkty</div>))
             ) : (
-              (answers2 === 1) ? (<div className="points">Jesteś {personality} Otrzymałeś: {answers2} punkt</div>) : (<div className="points">Jesteś {personality} Otrzymałeś: {answers2} punkty</div>))
-          ) : (
-            <>
-              <div className="question-section">
-                <div className='question-count'>
-                <CountdownTimer targetDate={dateTimeAfter}/>
-                  <span>Pytanie nr {currentQuestion2 + 1}</span>/{questions_main.length}
+              <>
+                <div className="question-section">
+                  <div className='question-count'>
+                    <CountdownTimer targetDate={dateTimeAfter} />
+                    <span>Pytanie nr {currentQuestion2 + 1}</span>/{questions_main.length}
+                  </div>
+                  <div className='question-text'>{questions_main[currentQuestion2].questionText}</div>
                 </div>
-                <div className='question-text'>{questions_main[currentQuestion2].questionText}</div>
-              </div>
-              <div className="answer-section">
-                {questions_main[currentQuestion2].answerOptions.map((answerOption, i) => (
-                  <button key={i} onClick={() => handleAnswerOptionClick2(answerOption.isCorrect)}>{answerOption.answerText}</button>
-                ))}
-              </div>
-            </>
-          )}
-        </>
+                <div className="answer-section">
+                  {questions_main[currentQuestion2].answerOptions.map((answerOption, i) => (
+                    <button key={i} onClick={() => handleAnswerOptionClick2(answerOption.isCorrect)}>{answerOption.answerText}</button>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            {showScore ? (
+              <div className='score-section'>
+                To jest koniec testu, {username} Twoja osobowość to:
+                <div className='row personality'>
+                  {personality}
+                </div>
+                <div className='row'>
+                  <Button variant="success" onClick={() => handleGoOptionClick()}> Przejdź do testu </Button>
+                </div>
+              </div >
+            ) : (
+              <>
+                <div className="question-section">
+                  <div className='question-count'>
+                    <span>Pytanie nr {currentQuestion + 1}</span>/{questions.length}
+                  </div>
+                  <div className='question-text'>{questions[currentQuestion].questionText}</div>
+                </div>
+                <div className="answer-section">
+                  {questions[currentQuestion].answerOptions.map((answerOption, i) => (
+                    <button key={i} onClick={() => handleAnswerOptionClick(answerOption.answer)}>{answerOption.answerText}</button>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </>
       ) : (
         <>
-          {showScore ? (
-            <div className='score-section'>
-              To jest koniec testu, Twoja osobowość to:
-              <div className='row personality'>
-                {personality}
-              </div>
-              <div className='row'>
-                <Button variant="success" onClick={() => handleGoOptionClick()}> Przejdź do testu </Button>
-              </div>
-            </div >
-          ) : (
-            <>
-              <div className="question-section">
-                <div className='question-count'>
-                  <span>Pytanie nr {currentQuestion + 1}</span>/{questions.length}
-                </div>
-                <div className='question-text'>{questions[currentQuestion].questionText}</div>
-              </div>
-              <div className="answer-section">
-                {questions[currentQuestion].answerOptions.map((answerOption, i) => (
-                  <button key={i} onClick={() => handleAnswerOptionClick(answerOption.answer)}>{answerOption.answerText}</button>
-                ))}
-              </div>
-            </>
-          )}
+          <div>
+            <form onSubmit={sendName}>
+              <label>Imię
+                <input className="form-control" type="text" name="username" value={username} onChange={(e) => setName(e.target.value)} />
+              </label>
+              <input className="btn btn-lg btn-primary" type="submit" value="Wyślij" />
+            </form>
+          </div>
         </>
       )}
     </div>
