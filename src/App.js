@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { CSVLink } from 'react-csv';
 import DateTimeDisplay from './components/DateTimeDisplay';
 import { useCountdown } from './components/useCountdown';
 
@@ -247,15 +248,45 @@ function App() {
     setShowQuiz(true);
   }
 
+  const csvData = [
+    ["Nazwa", "Osobowość", "Punkty"],
+    [username, personality, answers2]
+  ];
+
   return (
     <div className="App">
       {showQuiz ? (<>
         {showTest ? (
           <>
             {showScore2 ? (
-              (answers2 === 0 & answers2 >= 5) ? (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punktów</div>
+              (answers2 === 0 & answers2 >= 5) ? (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punktów
+                <br />
+                <CSVLink
+                  data={csvData}
+                  filename={"results.csv"}
+                  className="btn btn-danger"
+                  target="_blank"
+                >Pobierz
+                </CSVLink></div>
               ) : (
-                (answers2 === 1) ? (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punkt</div>) : (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punkty</div>))
+                (answers2 === 1) ? (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punkt <br />
+                  <CSVLink
+                    data={csvData}
+                    filename={"results.csv"}
+                    className="btn btn-danger"
+                    target="_blank"
+                  >Pobierz
+                  </CSVLink>
+                </div>) : (<div className="points">{username} <br />jesteś {personality} <br />Otrzymałeś: {answers2} punkty
+                  <br />
+                  <CSVLink
+                    data={csvData}
+                    filename={"results.csv"}
+                    className="btn btn-danger"
+                    target="_blank"
+                  >Pobierz
+                  </CSVLink>
+                </div>))
             ) : (
               <>
                 <div className="question-section">
